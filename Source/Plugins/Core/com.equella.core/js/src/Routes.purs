@@ -17,6 +17,7 @@ import Routing.PushState (PushStateInterface, makeInterface)
 import Unsafe.Coerce (unsafeCoerce)
 
 data Route = PrivilegesPage |
+    PrivilegeEdit String |
     SearchPage | 
     SettingsPage | 
     CoursesPage | 
@@ -40,7 +41,8 @@ homeSlash = lit ""
 
 routeMatch :: Match Route
 routeMatch = 
-    PrivilegesPage <$ (lit "privilege") <|>
+    PrivilegeEdit <$> (lit "security" *> str <* lit "edit") <|>
+    PrivilegesPage <$ (lit "security") <|>
     SearchPage <$ (lit "search") <|>
     SettingsPage <$ (lit "settings") <|>
     NewCourse <$ (lit "course" *> lit "new") <|>
@@ -72,7 +74,8 @@ routeHref r =
 
 routeURI :: Route -> String
 routeURI r = "/" <> ( case r of 
-    PrivilegesPage -> "privileges"
+    PrivilegesPage -> "security"
+    PrivilegeEdit targetNode -> "security/" <> targetNode <> "/edit"
     SearchPage -> "search"
     SettingsPage -> "settings"
     CoursesPage -> "course"

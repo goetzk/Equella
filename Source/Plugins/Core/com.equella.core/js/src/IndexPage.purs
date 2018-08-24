@@ -28,7 +28,7 @@ import Routes (Route(..), matchRoute, nav)
 import Routing.PushState (matchesWith)
 import SearchPage (searchPage)
 import SettingsPage (settingsPage)
-import TSComponents (courseEdit, coursesPage, privilegesPage)
+import TSComponents (courseEdit, coursesPage, privilegeEdit, privilegesPage)
 import Template (renderData, renderMain, renderReact)
 import Text.Parsing.Parser (ParseError, runParser)
 import URI (AbsoluteURI, HierPath, Host, Path, Port, Query, UserInfo)
@@ -79,6 +79,7 @@ main = do
         d = eval >>> flip runReaderT this
         render {route:Just r} = case r of 
           PrivilegesPage -> privilegesPage
+          PrivilegeEdit targetNode -> privilegeEdit $ Just targetNode
           SearchPage -> searchPage
           SettingsPage -> settingsPage {legacyMode:false}
           CoursesPage -> coursesPage
